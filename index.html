@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>NFTFAN PREMIUM MEMBERS</title>
+<title>NFTFAN SOLANA</title>
 <script src="https://sdk.amazonaws.com/js/aws-sdk-2.1002.0.min.js"></script>
 <style>
     body {
@@ -81,13 +81,14 @@
 <body>
 
 <div class="container">
-    <h1 style="font-size: 20px;">NFTFAN PREMIUM MEMBERS</h1>
-	<p style="font-size: 10px;">Following Free NFTs are Coming up next to active premium members.</p>
+    <h1 style="font-size: 20px; color: #c721e5;">NFT FANS SOLANA</h1>
+	<p style="font-size: 10px; color: #07e8a1;">Welcome SOLANA FANS.</p>
+
 
     <div class="image-container">
         <div class="moving-images">
-		<img src="https://pbs.twimg.com/media/GM5sk2DWIAAHVUn?format=jpg&name=small" alt="Image 2">
-            <img src="https://i.seadn.io/s/raw/files/0ebbb12515a30af8632e6557fea55565.png?auto=format&dpr=1&w=1000" alt="Image 1">
+		<img src="https://blush-rear-pig-836.mypinata.cloud/ipfs/QmNziwmuRFSbMd7Mg155PNvTNFF58terGFqg4MN954RGGc" alt="Image 2">
+            <img src="https://blush-rear-pig-836.mypinata.cloud/ipfs/QmPxok4whuZU6UnPcbvbdHYXdkKc5pJqthLmNAnvFGhPDR" alt="Image 1">
             <img src="https://pbs.twimg.com/media/GM5sk2DWIAAHVUn?format=jpg&name=small" alt="Image 2">
 			<img src="https://pbs.twimg.com/media/GM5sk2DWIAAHVUn?format=jpg&name=small" alt="Image 1">
             <img src="https://pbs.twimg.com/media/GM5sk2DWIAAHVUn?format=jpg&name=small" alt="Image 2">
@@ -102,8 +103,8 @@
     </div>
     
     <p style="font-size: 12px; background-color: #f1f1f1; color: #333; border: 1px solid #ccc; border-radius: 4px; padding: 15px; line-height: 1.5;">
-    To activate your premium membership <br> Pay <strong> 1 MATIC </strong> activation fee to our official wallet: <br>
-    <strong>0x92d550cdbc234211957bd1b579d962c885a127ba</strong>.
+    Register as NFT FAN SOLANA <br> Add your wallet in the box below. <br>
+    <strong>AIRDROP LIMIT: 1000 $NFTFAN</strong>.
 </p>
 
 
@@ -112,13 +113,13 @@
 
 
     <input type="text" id="walletAddress" placeholder="Enter your wallet address">
-    <button onclick="addWallet()">SUBSCRIBE</button>
+    <button onclick="addWallet()">REGISTER</button>
 
    <table>
     <thead>
         <tr>
             <th style="font-size: 10px;">Wallet Address</th>
-            <th style="font-size: 10px;">Subscription Status</th>
+            <th style="font-size: 10px;">Status</th>
         </tr>
     </thead>
     <tbody id="walletList">
@@ -143,54 +144,55 @@
         loadWallets();
     };
 
-    function addWallet() {
-        var walletAddress = document.getElementById("walletAddress").value.trim();
-        var walletRegex = /^(0x)?[0-9a-fA-F]{40}$/; // Regular expression to validate Ethereum wallet addresses
+function addWallet() {
+    var walletAddress = document.getElementById("walletAddress").value.trim();
+    var solanaWalletRegex = /^([1-9A-HJ-NP-Za-km-z]{44})$/; // Regular expression to validate Solana wallet addresses
 
-        if (!walletRegex.test(walletAddress)) {
-            alert("Please enter a valid Ethereum wallet address!");
+    if (!solanaWalletRegex.test(walletAddress)) {
+        alert("Please enter a valid Solana wallet address!");
+        return;
+    }
+
+    // Check if the wallet already exists
+    var existingWallets = document.querySelectorAll("#walletList td:first-child");
+    for (var i = 0; i < existingWallets.length; i++) {
+        if (existingWallets[i].textContent === walletAddress) {
+            alert("This wallet address is already added.");
             return;
         }
-
-        // Check if the wallet already exists
-        var existingWallets = document.querySelectorAll("#walletList td:first-child");
-        for (var i = 0; i < existingWallets.length; i++) {
-            if (existingWallets[i].textContent === walletAddress) {
-                alert("This wallet address is already added.");
-                return;
-            }
-        }
-
-        var params = {
-            TableName: tableName,
-            Item: {
-                solfan: Date.now().toString(), // Primary key attribute
-                walletId: 'wallet_' + Date.now().toString(), // Unique wallet ID
-                address: walletAddress,
-                dateTime: new Date().toISOString() // Date and time attribute
-            }
-        };
-
-        dynamodb.put(params, function(err, data) {
-            if (err) {
-                alert("Error adding wallet to DynamoDB: " + err.message);
-            } else {
-                console.log("Successfully added wallet to DynamoDB", data);
-                loadWallets(); // Reload wallets after adding
-
-                // Animate the newly added wallet
-                var newWalletRow = document.querySelector("#walletList tr:last-child");
-                newWalletRow.style.opacity = 0;
-                setTimeout(function() {
-                    newWalletRow.style.transition = "opacity 1s";
-                    newWalletRow.style.opacity = 1;
-                }, 100);
-            }
-        });
-
-        // Clear input field
-        document.getElementById("walletAddress").value = "";
     }
+
+    var params = {
+        TableName: tableName,
+        Item: {
+            solfan: Date.now().toString(), // Primary key attribute
+            walletId: 'wallet_' + Date.now().toString(), // Unique wallet ID
+            address: walletAddress,
+            dateTime: new Date().toISOString() // Date and time attribute
+        }
+    };
+
+    dynamodb.put(params, function(err, data) {
+        if (err) {
+            alert("Error adding wallet to DynamoDB: " + err.message);
+        } else {
+            console.log("Successfully added wallet to DynamoDB", data);
+            loadWallets(); // Reload wallets after adding
+
+            // Animate the newly added wallet
+            var newWalletRow = document.querySelector("#walletList tr:last-child");
+            newWalletRow.style.opacity = 0;
+            setTimeout(function() {
+                newWalletRow.style.transition = "opacity 1s";
+                newWalletRow.style.opacity = 1;
+            }, 100);
+        }
+    });
+
+    // Clear input field
+    document.getElementById("walletAddress").value = "";
+}
+
 
     function loadWallets() {
         var params = {
@@ -212,7 +214,7 @@
 
     // Define wallet addresses and their statuses in an object or map
     var walletStatus = {
-        "0x01cCcFd804235b84b3b77Cc4E85864E1AA06CaCB": "Active",
+        "3g2DoMqQRFuM2uTQJfvKr2XzWjQnSaiECj9tWQmkfCVK": "MEMBER",
         "0x94e52B16F907817f3E95E2baca97AC9A3dE7deb1": "Active",
 		"0xEE39d996c9EbDA71DA5f3bcAC6c8F1b74c343220": "Active",
         // Add more wallet addresses and statuses as needed
@@ -227,17 +229,17 @@
         
         // Create a tab element for status display
         var statusTab = document.createElement("div");
-        statusTab.textContent = walletStatus.hasOwnProperty(wallet.address) ? walletStatus[wallet.address] : "Pending";
+        statusTab.textContent = walletStatus.hasOwnProperty(wallet.address) ? walletStatus[wallet.address] : "NFTFAN";
         statusTab.style.padding = "5px 10px";
         statusTab.style.borderRadius = "5px";
         statusTab.style.fontSize = "10px";
         
         // Apply styles based on status
         if (walletStatus.hasOwnProperty(wallet.address)) {
-            statusTab.style.backgroundColor = "green"; // Active status with green background
+            statusTab.style.backgroundColor = "#c721e5"; // Active status with green background
             statusTab.style.color = "white"; // Active status text color
         } else {
-            statusTab.style.backgroundColor = "red"; // Pending status with red background
+            statusTab.style.backgroundColor = "#14e3a5"; // Pending status with red background
             statusTab.style.color = "white"; // Pending status text color
         }
         
